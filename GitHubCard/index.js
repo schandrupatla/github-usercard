@@ -4,6 +4,47 @@
     https://api.github.com/users/<your name>
 */
 
+const followersArray = [ 
+  "schandrupatla",
+  "tetondan",
+   "dustinmyers",
+   "justsml",
+   "luishrd",
+   "bigknell"];
+
+ const entryPoint = document.querySelector(".cards")
+
+
+//Task-5
+followersArray.forEach((item)=>{
+  const newPerson =`https://api.github.com/users/${item}`
+  console.log(newPerson);
+  axios
+  .get(newPerson)
+  .then((res)=>{
+    const results = res.data;
+    const newCard = cardMaker(results);
+    entryPoint.appendChild(newCard);
+    console.log("RESPONSE :", res.data);
+  })
+   .catch((err)=>{
+    console.log(err);
+   });
+});
+
+//Task-1
+// .get("https://api.github.com/users/schandrupatla")
+// .then((res)=>{
+//   const results = res.data;
+//   const newCard = cardMaker(results);
+//   entryPoint.appendChild(newCard);
+//   console.log("RESPONSE :", res.data);
+// })
+//  .catch((err)=>{
+//   console.log(err);
+//  });
+
+
 /*
   STEP 2: Inspect and study the data coming back, this is YOUR
     github info! You will need to understand the structure of this
@@ -28,7 +69,12 @@
     user, and adding that card to the DOM.
 */
 
-const followersArray = [];
+// const followersArray = [ 
+//  "tetondan",
+//   "dustinmyers",
+//   "justsml",
+//   "luishrd",
+//   "bigknell"];
 
 /*
   STEP 3: Create a function that accepts a single object as its only argument.
@@ -49,6 +95,76 @@ const followersArray = [];
       </div>
     </div>
 */
+
+function cardMaker(obj){
+  //div-card
+const divCard = document.createElement("div");
+divCard.classList.add("card");
+
+//img
+const img = document.createElement("img");
+img.setAttribute('src',obj.avatar_url );
+divCard.appendChild(img);
+
+//div-"card-info"
+const divCardInfo = document.createElement("div");
+divCardInfo.classList.add("card-info");
+divCard.appendChild(divCardInfo);
+
+//<h3 class="name">{users name}</h3>
+const h3 = document.createElement("h3");
+h3.classList.add("name");
+h3.textContent = obj.name;
+divCardInfo.appendChild(h3);
+
+// <p class="username">{users user name}</p>
+const pUsername = document.createElement("p");
+pUsername.classList.add("username");
+pUsername.textContent= obj.login;
+divCardInfo.appendChild(pUsername);
+
+// <p>Location: {users location}</p>
+const pLocation = document.createElement("p");
+pLocation.textContent = obj.location;
+divCardInfo.appendChild(pLocation);
+
+// <p>Profile:
+const pProfile = document.createElement("p");
+pProfile.textContent = "Profile :";
+// pProfile.href =`${obj.url}`
+ divCardInfo.appendChild(pProfile);
+
+//   <a href={address to users github page}>{address to users github page}</a>
+const aProfile = document.createElement("a");
+// aProfile.href =`${obj.html_url}` ;
+aProfile.textContent = "LinkedIn Profile";
+aProfile.setAttribute('href',`${obj.html_url}`) ;
+pProfile.appendChild(aProfile);
+
+// <p>Followers: {users followers count}</p>
+const pFollowers = document.createElement("p");
+pFollowers.textContent = `Followers : ${obj.followers}`;
+divCardInfo.appendChild(pFollowers);
+
+ //<p>Following: {users following count}</p>
+const pFollowing = document.createElement("p");
+pFollowing.textContent = `Following : ${obj.following}`;
+divCardInfo.appendChild(pFollowing);
+
+// <p>Bio: {users bio}</p> */}
+const pBio = document.createElement("p");
+pBio.textContent = `Bio: ${obj.bio}`;
+divCardInfo.appendChild(pBio);
+
+
+
+//pProfile.appendChild(aProfile);
+console.log(divCard);
+return divCard;
+}
+
+
+
 
 /*
   List of LS Instructors Github username's:
